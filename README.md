@@ -1,5 +1,8 @@
 # Campus-Network-Login
-校园网一键登录，用于**重庆邮电大学**，支持伪装设备类型，支持识别Wifi类型，支持 Linux&Windows。
+校园网一键登录，用于**重庆邮电大学**
+- 支持伪装设备类型，自由切换手机电脑
+- 识别 Wifi 类型，仅连接校园网时才执行脚本
+- 支持 Linux&Windows
 
 ### Usage
 
