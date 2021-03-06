@@ -1,7 +1,7 @@
 const fetch = require("node-fetch");
 const wifi = require("node-wifi");
 const os = require('os');
-let stop = 5; // 无法登录重尝 5-1 次
+let stop = 5; // 若无法登录尝试登录 5-1=4 次
 const device = "0"; // 伪装设备，0 为电脑，1 为手机
 const account = "xxxxx"; // 帐号
 const passwd = "xxxxx"; // 密码

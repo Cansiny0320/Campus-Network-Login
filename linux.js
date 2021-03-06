@@ -1,7 +1,7 @@
 const fetch = require("node-fetch");
 const os = require('os');
 const { exec } = require('child_process');
-let stop = 5; // 无法登录重尝 5-1 次
+let stop = 5; // 若无法登录尝试登录 5-1=4 次
 const device = "0"; // 伪装设备，0 为电脑，1 为手机
 const account = "xxxxx"; // 帐号
 const passwd = "xxxxx"; // 密码
@@ -9,12 +9,12 @@ const type = "cmcc"; // cmcc 为移动，telecom 为电信
 const wifiList = ['CQUPT', 'CQUPT-2.4G', 'CQUPT-5G']; // 仅连接到以下网络时才运行
 
 exec('nmcli -t -f NAME connection show --active', (err, stdout) => {
-    if(err) {
-        console.log(err);
-        return;
-    } else if (wifiList.includes(stdout.slice(0,-1))){
-      main();
-    }
+  if (err) {
+    console.log(err);
+    return;
+  } else if (wifiList.includes(stdout.slice(0, -1))) {
+    main();
+  }
 })
 
 function main() {
