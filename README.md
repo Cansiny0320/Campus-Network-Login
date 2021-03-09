@@ -6,7 +6,7 @@
 
 ### Usage
 
-需要提前安装 nodejs，Linux 需要额外安装 NetworkManager。
+需要提前安装 nodejs，Linux 需要额外安装 NetworkManager，Mac 可以自行修改，主要是判断当前连接的 Wifi。
 
 ```shell
 git clone https://github.com/ourongxing/Campus-Network-Login.git
@@ -17,10 +17,8 @@ cd Campus-Network-Login & yarn
 # const passwd = "xxxxx"; // 密码
 # const type = "cmcc"; // cmcc 为移动，telecom 为电信
 
-# Win
-node win.js
-# Linux
-node linux.js
+# then
+node index.js
 ```
 
  Win 可以尝试搭配计划任务来实现开机自动登录，Linux 就不用多说了，自动执行的方法很多。Mac 的话由于我没有设备，不过你简单修改应该也可以。
