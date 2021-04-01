@@ -3,5 +3,8 @@
     "internal-ip": "^6.2.0",
     "node-fetch": "^2.6.1",
     "node-wifi": "^2.0.14"
+  },
+  "scripts": {
+    "pkg": "pkg -t win index.js"
   }
 }
