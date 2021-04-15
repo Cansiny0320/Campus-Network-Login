@@ -9,15 +9,18 @@ const wifiList = ["CQUPT-5G", "CQUPT", "CQUPT-2.4G"] // 校园网WiFi列表，�
 let stop = 5 // 无法登录重尝 5-1 次
 
 if (os.type() == "Windows_NT") {
-  const wifi = require("node-wifi")
-  wifi.init({
-    iface: null,
-  })
-  wifi.scan((error, networks) => {
-    if (error) {
-      console.log(error)
-    } else {
-      // console.log(networks)
+  ;(async () => {
+    try {
+      const wifi = require("node-wifi")
+      wifi.init({
+        iface: null,
+      })
+      const currentConnections = await wifi.getCurrentConnections()
+      if (currentConnections.some(item => wifiList.includes(item.ssid))) {
+        main()
+        return
+      }
+      const networks = await wifi.scan()
       let ssid
       const ssids = networks.map(item => {
         if (wifiList.includes(item.ssid)) {
@@ -31,17 +34,15 @@ if (os.type() == "Windows_NT") {
         }
       })
       if (ssid) {
-        wifi.connect({ ssid }, error => {
-          if (error) {
-            console.log(error)
-          }
-          main()
-        })
+        await wifi.connect({ ssid })
+        main()
       } else {
         console.log("附近没有校园WiFi")
       }
+    } catch (error) {
+      console.log("连接wifi失败", error)
     }
-  })
+  })()
 } else if (os.type() == "Linux") {
   const { exec } = require("child_process")
   exec("nmcli -t -f NAME connection show --active", (err, stdout) => {
@@ -91,10 +92,14 @@ function getIPAddress() {
 }
 
 async function login() {
-  const response = await fetch(
-    `http://192.168.200.2:801/eportal/?c=Portal&a=login&callback=dr1003&login_method=1&user_account=%2C${device}%2C${account}%40${type}&user_password=${passwd}&wlan_user_ip=${await getIPAddress()}&wlan_user_ipv6=&wlan_user_mac=000000000000&wlan_ac_ip=&wlan_ac_name=`,
-  )
-  const info = await response.text()
-  const { msg } = JSON.parse(info.slice(7, -1))
-  return msg
+  try {
+    const response = await fetch(
+      `http://192.168.200.2:801/eportal/?c=Portal&a=login&callback=dr1003&login_method=1&user_account=%2C${device}%2C${account}%40${type}&user_password=${passwd}&wlan_user_ip=${await getIPAddress()}&wlan_user_ipv6=&wlan_user_mac=000000000000&wlan_ac_ip=&wlan_ac_name=`,
+    )
+    const info = await response.text()
+    const { msg } = JSON.parse(info.slice(7, -1))
+    return msg
+  } catch (error) {
+    console.log("请求失败")
+  }
 }
