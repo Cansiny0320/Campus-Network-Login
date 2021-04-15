@@ -38,9 +38,10 @@ if (os.type() == "Windows_NT") {
         main()
       } else {
         console.log("附近没有校园WiFi")
+        return
       }
     } catch (error) {
-      console.log("连接wifi失败", error)
+      main()
     }
   })()
 } else if (os.type() == "Linux") {
@@ -72,12 +73,15 @@ async function main() {
      * 其他就是 其他设备已登录
      */
     const msg = await login()
-
-    if (msg == "认证成功") {
+    console.log(msg)
+    if (msg === "认证成功") {
       console.log("登录成功")
       return
-    } else if (msg == "") {
+    } else if (msg === "") {
       console.log("本机已登录")
+      return
+    } else if (msg === "bGRhcCBhdXRoIGVycm9y") {
+      console.log("密码错误")
       return
     } else {
       main()
